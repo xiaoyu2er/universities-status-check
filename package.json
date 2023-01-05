@@ -1,0 +1,26 @@
+{
+  "name": "universities-status-check",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaoyu2er/universities-status-check.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xiaoyu2er/universities-status-check/issues"
+  },
+  "homepage": "https://github.com/xiaoyu2er/universities-status-check#readme",
+  "dependencies": {
+    "crawler": "^1.4.0",
+    "diff": "^5.1.0",
+    "diff2html": "^3.4.22",
+    "js-beautify": "^1.14.7",
+    "nodemailer": "^6.8.0"
+  }
+}
