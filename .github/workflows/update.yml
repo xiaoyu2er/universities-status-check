@@ -6,7 +6,7 @@ on:
   schedule:
     - cron:  "0 8 * * *"
 jobs:
-  UpdateNews:
+  UpdatStatus:
     if: "!contains(github.event.commits[0].message, '[auto]')"
     runs-on: ubuntu-latest
     steps:
@@ -35,14 +35,8 @@ jobs:
         run: npm install
       - name: Update ${{ steps.date.outputs.date }} 
         run: node src/index.js ${{ secrets.FROM_EMAIL }} ${{ secrets.FROM_EMAIL_PASS }} ${{ secrets.TO_EMAIL }}
-      - name: Commit files
-        run: |
-         git config --local user.email "zongyanqi@gmail.com"
-         git config --local user.name "xiaoyu2er"
-         git add .
-         git commit -m "[auto] update university status"
-      - name: Push changes
-        uses:  ad-m/github-push-action@master
+      - name: Commit
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
+          commit_message: [auto] update university status
+    
