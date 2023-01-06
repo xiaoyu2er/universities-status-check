@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Update ${{ steps.date.outputs.date }} 
-        run: node index.js ${{ secrets.FROM_EMAIL }} ${{ secrets.FROM_EMAIL_PASS }} ${{ secrets.TO_EMAIL }}
+        run: node src/index.js ${{ secrets.FROM_EMAIL }} ${{ secrets.FROM_EMAIL_PASS }} ${{ secrets.TO_EMAIL }}
       - name: Commit files
         run: |
          git config --local user.email "zongyanqi@gmail.com"
@@ -44,5 +44,5 @@ jobs:
       - name: Push changes
         uses:  ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GIT_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: master
