@@ -1,4 +1,4 @@
-name: Update CCTV News
+name: Update University Status
 on: 
   push:
     branches: 
