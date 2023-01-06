@@ -35,8 +35,7 @@ jobs:
         run: npm install
       - name: Update ${{ steps.date.outputs.date }} 
         run: node src/index.js ${{ secrets.FROM_EMAIL }} ${{ secrets.FROM_EMAIL_PASS }} ${{ secrets.TO_EMAIL }}
-      - name: Commit
-        uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: [auto] update university status
     
