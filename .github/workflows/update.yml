@@ -4,25 +4,12 @@ on:
     branches: 
       - master
   schedule:
-    - cron:  "0 8 * * *"
+    - cron:  "0 0 * * *"
 jobs:
   UpdatStatus:
-    if: "!contains(github.event.commits[0].message, '[auto]')"
+    if: "!contains(github.event.commits[0].message, 'auto update')"
     runs-on: ubuntu-latest
     steps:
-      - name: Set timezone
-        uses: szenius/set-timezone@v1.0
-        with:
-          timezoneLinux: "UTC-5"
-          timezoneMacos: "UTC-5"
-          timezoneWindows: "UTC-5"
-      - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-      - name: Test with environment variables
-        run: echo current date - $DATE
-        env:
-          DATE: ${{ steps.date.outputs.date }}
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -33,9 +20,8 @@ jobs:
           node-version: '14'
       - name: Install dependencies
         run: npm install
-      - name: Update ${{ steps.date.outputs.date }} 
+      - name: Run crawler 
         run: node src/index.js ${{ secrets.FROM_EMAIL }} ${{ secrets.FROM_EMAIL_PASS }} ${{ secrets.TO_EMAIL }}
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: [auto] update university status
-    
+          commit_message: auto update
