@@ -7,13 +7,17 @@ const {
 } = require("./file");
 const beautify = require("js-beautify").html;
 const Crawler = require("crawler");
-const { universities, selectors } = require("./config");
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+
+const { universities, selectors, ignoreSelectors } = require("./config");
 const { isEqual } = require("./diff");
 const { email } = require("./email");
 const [fromEmail, fromEmailPass, toEmail] = process.argv.slice(2);
 
 const diffs = [];
 const c = new Crawler({
+  jQuery: jsdom,
   maxConnections: 10,
   // This will be called for each crawled page
   callback: (error, res, done) => {
@@ -21,12 +25,18 @@ const c = new Crawler({
     const { uri } = req;
     // const url = new URL(uri);
     const hostname = uri.hostname;
-    const selector = selectors[hostname];
+
     if (error) {
       console.log(error);
     } else {
-      const $ = res.$;
-      const newHtml = beautify($(selector).html());
+      const body = res.body;
+      const { document: doc } = new JSDOM(body).window;
+      const selector = selectors[hostname];
+      const ignoreSelector = ignoreSelectors[hostname];
+      if (ignoreSelector) {
+        doc.querySelector(ignoreSelector)?.remove();
+      }
+      const newHtml = beautify(doc.querySelector(selector).outerHTML);
       const name = res.options.name;
       const oldHmtl = getUniversityContent(name);
 
@@ -57,11 +67,11 @@ c.queue(universities);
 c.on("drain", () => {
   if (diffs.length) {
     console.log(`==EMAIL with ${diffs.length} diffs==`);
-    email(getEmailHtml(diffs.join("\n")), {
-      from: fromEmail,
-      pass: fromEmailPass,
-      to: toEmail,
-    });
+    // email(getEmailHtml(diffs.join("\n")), {
+    //   from: fromEmail,
+    //   pass: fromEmailPass,
+    //   to: toEmail,
+    // });
   } else {
     console.log("==NO UPDATE==");
   }

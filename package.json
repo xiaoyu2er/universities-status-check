@@ -21,6 +21,7 @@
     "diff": "^5.1.0",
     "diff2html": "^3.4.22",
     "js-beautify": "^1.14.7",
+    "jsdom": "^21.1.0",
     "nodemailer": "^6.8.0"
   }
 }

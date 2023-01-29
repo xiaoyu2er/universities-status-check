@@ -4,6 +4,9 @@ const selectors = {
   "www.wscuc.org": "#primary",
   "www.msche.org": ".content-wrap",
 };
+const ignoreSelectors = {
+  "www.hlcommission.org": ".addressblock",
+};
 const universities = [
   {
     name: "NEW ENGLAND COLLEGE",
@@ -50,4 +53,5 @@ const universities = [
 module.exports = {
   universities,
   selectors,
+  ignoreSelectors,
 };
