@@ -24,8 +24,12 @@ function getEmailHtml(html) {
   return fs.readFileSync("email.html").toString().replace("${body}", html);
 }
 
+function updateLog(content) {
+  return fs.appendFileSync("./data/log.txt", content);
+}
 module.exports = {
   getUniversityContent,
   saveUniveriityContent,
   getEmailHtml,
+  updateLog,
 };

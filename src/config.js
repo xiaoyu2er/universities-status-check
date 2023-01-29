@@ -5,7 +5,7 @@ const selectors = {
   "www.msche.org": ".content-wrap",
 };
 const ignoreSelectors = {
-  "www.hlcommission.org": ".addressblock",
+  "www.hlcommission.org": [".addressblock"],
 };
 const universities = [
   {

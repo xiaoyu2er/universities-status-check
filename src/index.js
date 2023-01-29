@@ -4,6 +4,7 @@ const {
   saveUniveriityContent,
   getUniversityContent,
   getEmailHtml,
+  updateLog,
 } = require("./file");
 const beautify = require("js-beautify").html;
 const Crawler = require("crawler");
@@ -34,9 +35,23 @@ const c = new Crawler({
       const selector = selectors[hostname];
       const ignoreSelector = ignoreSelectors[hostname];
       if (ignoreSelector) {
-        doc.querySelector(ignoreSelector)?.remove();
+        ignoreSelector.forEach((s) => {
+          doc.querySelector(s)?.remove();
+        });
       }
-      const newHtml = beautify(doc.querySelector(selector).outerHTML);
+      // remove scritps and style
+      const scripts = [
+        ...doc.getElementsByTagName("script"),
+        ...doc.getElementsByTagName("style"),
+      ];
+      scripts.forEach((s) => {
+        s.parentNode.removeChild(s);
+      });
+
+      const newHtml = beautify(doc.querySelector(selector).outerHTML, {
+        indent_size: 2,
+        max_preserve_newlines: 0,
+      });
       const name = res.options.name;
       const oldHmtl = getUniversityContent(name);
 
@@ -65,14 +80,15 @@ const c = new Crawler({
 c.queue(universities);
 
 c.on("drain", () => {
+  const time = new Date().toGMTString();
+  const log = time + " | " + diffs.length + " diffs\n";
   if (diffs.length) {
-    console.log(`==EMAIL with ${diffs.length} diffs==`);
-    // email(getEmailHtml(diffs.join("\n")), {
-    //   from: fromEmail,
-    //   pass: fromEmailPass,
-    //   to: toEmail,
-    // });
-  } else {
-    console.log("==NO UPDATE==");
+    email(getEmailHtml(diffs.join("\n")), {
+      from: fromEmail,
+      pass: fromEmailPass,
+      to: toEmail,
+    });
   }
+  console.log(log);
+  updateLog(log);
 });
