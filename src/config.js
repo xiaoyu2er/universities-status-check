@@ -3,11 +3,12 @@ const selectors = {
   "www.hlcommission.org": ".kunena_body",
   "www.wscuc.org": "#primary",
   "www.msche.org": ".content-wrap",
+  "www.uscis.gov": "#page-content",
 };
 const ignoreSelectors = {
   "www.hlcommission.org": [".addressblock"],
 };
-const universities = [
+const sites = [
   {
     name: "NEW ENGLAND COLLEGE",
     uri: "https://www.neche.org/institution/new-england-college/",
@@ -48,10 +49,19 @@ const universities = [
     name: "MONROE COLLEGE",
     uri: "https://www.msche.org/institution/0715/",
   },
+  {
+    name: 'H1B Electronic Registration Process',
+    uri: 'https://www.uscis.gov/working-in-the-united-states/temporary-workers/h-1b-specialty-occupations-and-fashion-models/h-1b-electronic-registration-process'
+  },
+  {
+    name: 'H1B Cap Season',
+    uri: 'https://www.uscis.gov/working-in-the-united-states/temporary-workers/h-1b-specialty-occupations-and-fashion-models/h-1b-cap-season'
+  }
+
 ];
 
 module.exports = {
-  universities,
+  sites,
   selectors,
   ignoreSelectors,
 };

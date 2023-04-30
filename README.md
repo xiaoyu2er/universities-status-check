@@ -1,3 +1,3 @@
-# University Status Check
+# Site diff check
 
-检查学校的认证状态
+检查页面变化

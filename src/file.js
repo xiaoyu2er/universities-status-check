@@ -1,23 +1,23 @@
 const fs = require("fs");
 
-function getUniversityFilePath(name) {
+function getSiteFilePath(name) {
   return `data/${name}.html`;
 }
 
-function getUniversityContent(name) {
-  return fs.readFileSync(getUniversityFilePath(name)).toString();
+function getSiteContent(name) {
+  const filePath = getSiteFilePath(name);
+  if (fs.existsSync(filePath)) {
+    return fs.readFileSync(getSiteFilePath(name)).toString();
+  } else {
+    return "";
+  }
 }
-function saveUniveriityContent(name, data) {
-  return fs.writeFile(
-    getUniversityFilePath(name),
-    data,
-    { flag: "w" },
-    (err) => {
-      if (err) {
-        console.error(err);
-      }
+function saveSiteContent(name, data) {
+  return fs.writeFile(getSiteFilePath(name), data, { flag: "w" }, (err) => {
+    if (err) {
+      console.error(err);
     }
-  );
+  });
 }
 
 function getEmailHtml(html) {
@@ -28,8 +28,8 @@ function updateLog(content) {
   return fs.appendFileSync("./data/log.txt", content);
 }
 module.exports = {
-  getUniversityContent,
-  saveUniveriityContent,
+  getSiteContent,
+  saveSiteContent,
   getEmailHtml,
   updateLog,
 };

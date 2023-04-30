@@ -28,7 +28,7 @@ async function email(html, options = {}) {
   let info = await transporter.sendMail({
     from: options.from || '"Fred Foo 👻" <foo@example.com>', // sender address
     to: options.to || "bar@example.com, baz@example.com", // list of receivers
-    subject: "【UNIVERSITY STATUS CHANGE】",
+    subject: "【SITE CONTENT CHANGE】",
     html, // html body
   });
 

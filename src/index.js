@@ -1,8 +1,8 @@
 const Diff = require("diff");
 const Diff2Html = require("diff2html");
 const {
-  saveUniveriityContent,
-  getUniversityContent,
+  saveSiteContent,
+  getSiteContent,
   getEmailHtml,
   updateLog,
 } = require("./file");
@@ -11,7 +11,7 @@ const Crawler = require("crawler");
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 
-const { universities, selectors, ignoreSelectors } = require("./config");
+const { sites, selectors, ignoreSelectors } = require("./config");
 const { isEqual } = require("./diff");
 const { email } = require("./email");
 const [fromEmail, fromEmailPass, toEmail] = process.argv.slice(2);
@@ -53,7 +53,7 @@ const c = new Crawler({
         max_preserve_newlines: 0,
       });
       const name = res.options.name;
-      const oldHmtl = getUniversityContent(name);
+      const oldHmtl = getSiteContent(name);
 
       var diff = Diff.createTwoFilesPatch(name, name, oldHmtl, newHtml);
       if (isEqual(diff, name)) {
@@ -65,25 +65,27 @@ const c = new Crawler({
           matching: "lines",
           outputFormat: "side-by-side",
         });
-
+        console.log("DIFF", name);
         diffs.push(
           html +
             `\n <p>Source: <a target="_blank" href="${uri.href}">${uri.href}</a></p>\n`
         );
-        saveUniveriityContent(name, newHtml);
+        saveSiteContent(name, newHtml);
       }
     }
     done();
   },
 });
 
-c.queue(universities);
+c.queue(sites);
 
 c.on("drain", () => {
   const time = new Date().toGMTString();
   const log = time + " | " + diffs.length + " diffs\n";
   if (diffs.length) {
-    email(getEmailHtml(diffs.join("\n")), {
+    const emailContent = getEmailHtml(diffs.join("\n"));
+    // console.log(emailContent);
+    email(emailContent, {
       from: fromEmail,
       pass: fromEmailPass,
       to: toEmail,
