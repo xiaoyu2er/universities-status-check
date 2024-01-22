@@ -5,8 +5,10 @@ on:
       - master
   schedule:
     - cron:  "0 0 * * *"
+  workflow_dispatch:
+
 jobs:
-  UpdatStatus:
+  UpdateStatus:
     if: "!contains(github.event.commits[0].message, '[auto]')"
     runs-on: ubuntu-latest
     steps:
