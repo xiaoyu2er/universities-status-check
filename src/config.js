@@ -1,5 +1,5 @@
 const selectors = {
-  "www.neche.org": ".institution-details",
+  "www.neche.org": ".elementor-element-e9afef5",
   "www.hlcommission.org": ".kunena_body",
   "www.wscuc.org": "#primary",
   "www.msche.org": ".content-wrap",
